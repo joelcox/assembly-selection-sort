@@ -10,8 +10,8 @@
 int my_selection_sort(int ar[], int length);
 
 /* C implementation: */
-void selection_sort (int ar[], int length) {
-	int i, i_new, j, result, temp;
+int selection_sort (int ar[], int length) {
+	int i, i_min, j, result, temp;
 
 	result = 0;
 	for ( i = 0 ; i < length ; i++ ) {
