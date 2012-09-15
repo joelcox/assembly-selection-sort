@@ -2,7 +2,7 @@
 	.code32
 	.text
 	.globl _my_selection_sort
-	.include "marcos.s"
+	.include "macros.s"
 _my_selection_sort:
 	push	ebp
 	mov		ebp, esp
