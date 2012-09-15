@@ -103,7 +103,7 @@ int compare (int ar1[], int ar2[], int length) {
 /* runs the selection sort routine and the tests on an array with length elements.
    */
 void run(int length) {
-        int *ar, *old, n;
+        int *ar, *old, n_gcc, n_asm;
 	clock_t start_time, stop_time;
 
 	if ( 1 == length )
@@ -119,14 +119,15 @@ void run(int length) {
 	copyArray(old, ar, length + 2);
         printArray("Voor sorteren:", &ar[1], length);
 	start_time = clock();
-#ifdef GCC_TEST
-	n = selection_sort(&ar[1], length);
-#else
-	n = my_selection_sort(&ar[1], length);
-#endif
+
+	n_gcc = selection_sort(&ar[1], length);
+	n_asm = my_selection_sort(&ar[1], length);
+
 	stop_time = clock();
         printArray("Na sorteren:  ", &ar[1], length);
-	printf("Resultaat van de functie: %d\n", n);
+	printf("Resultaat van de functie volgens GCC: %d\n", n_gcc);
+	printf("Resultaat van de functie volgens ASM: %d\n", n_asm);
+
 	printf("Verstreken tijd: %g seconden\n",
 		(stop_time - start_time) * (1.0 / CLOCKS_PER_SEC));
 
@@ -150,7 +151,7 @@ void run(int length) {
 	else if ( ! compare(&old[1], &ar[1], length) )
 		printf("Fout: de array bevat opeens andere elementen!\n");
 #ifndef GCC_TEST
-        else if ( n != selection_sort(&old[1], length) )
+        else if ( n_asm != selection_sort(&old[1], length) )
                 printf("Fout: het resultaat van de functie is verkeerd!\n");
 #endif
 
