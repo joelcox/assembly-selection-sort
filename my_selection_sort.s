@@ -19,8 +19,9 @@ _my_selection_sort:
 	mov 	eax, 0		# Set 'i' to 0
 	mov	ebx, 0		# Set 'result' to 0	
 	
-ofor:	cmp	eax, [ebp + 12]	# SOF outer for loop
-	jge	endofor
+outer_for:	
+	cmp	eax, [ebp + 12]	# SOF outer for loop
+	jge	end_outer_for
 
 	# Skip this if i > 12
 	
@@ -29,8 +30,9 @@ ofor:	cmp	eax, [ebp + 12]	# SOF outer for loop
 	mov	edx, eax	# Set 'j' to 'i' + 1
 	add 	edx, 1
 	
-ifor:	cmp	edx, [ebp + 12]	# SOF inner for loop
-	jge	endifor
+inner_for:	
+	cmp	edx, [ebp + 12]	# SOF inner for loop
+	jge	end_inner_for
 	
 	# Skip this if j > 12
 	
@@ -39,17 +41,19 @@ ifor:	cmp	edx, [ebp + 12]	# SOF inner for loop
 	mov	edi, [ebp + 8]
 	mov 	esi, [edi + edx * 4] # Set 'ar_j'
 
+condition:
 	# We can have one value in RAM, the other in a register
-con:	cmp 	esi, [edi + ecx * 4]
-	jge	endcon
+	cmp 	esi, [edi + ecx * 4]
+	jge	end_condition
 	
 	# Skip this if ar_j < ar_min_i
 	mov	ecx, edx
 
-endcon: add	edx, 1
-	jmp	ifor		# EOF condition, back to inner loop
+end_condition: 
+	add	edx, 1
+	jmp	inner_for	# EOF condition, back to inner loop
 	
-endifor:
+end_inner_for:
 	# Get the memory location of the array
 	mov	edx, [ebp + 8]	# Reset 'j' for array start
 	
@@ -61,9 +65,9 @@ endifor:
 
 	add	ebx, ecx	# Add 'min_i' to 'result'
 	add 	eax, 1
-	jmp 	ofor
+	jmp 	outer_for
 	 
-endofor:
+end_outer_for:
 	mov eax, ebx	# Put result on EAX
 	# Modify above this line
 	pop		ebx
