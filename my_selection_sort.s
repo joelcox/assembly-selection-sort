@@ -22,7 +22,7 @@ _my_selection_sort:
 ofor:	cmp	eax, [ebp + 12]	# SOF outer for loop
 	jge	endofor
 
-	# Skip this if i <= 12
+	# Skip this if i > 12
 	
 	# Prep for inner for loop
 	mov	ecx, eax	# Set 'min_i' to 'i'
@@ -32,16 +32,15 @@ ofor:	cmp	eax, [ebp + 12]	# SOF outer for loop
 ifor:	cmp	edx, [ebp + 12]	# SOF inner for loop
 	jge	endifor
 	
-	# Skip this if j <= 12
+	# Skip this if j > 12
 	
 	# Prep for the condition. The array element are still in RAM
 	# so we need to get those into registers first.
-	mov	ebx, [ebp + 8]
-	
-	mov 	esi, [ebx + edx * 4] # Set 'ar_j'
-	mov 	edi, [ebx + ecx * 4] # Set 'ar_min_i'
+	mov	edi, [ebp + 8]
+	mov 	esi, [edi + edx * 4] # Set 'ar_j'
 
-con:	cmp 	esi, edi
+	# We can have one value in RAM, the other in a register
+con:	cmp 	esi, [edi + ecx * 4]
 	jge	endcon
 	
 	# Skip this if ar_j < ar_min_i
